@@ -1,0 +1,29 @@
+# Shared across all four experts
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+pillow>=10.0
+
+# Lenny — FT-Transformer (GPU)
+torch>=2.2
+torchvision>=0.17
+timm>=0.9
+sentence-transformers>=2.2
+
+# Jasmine — Healthcare LightGBM
+lightgbm>=4.0
+
+# Eddy — XGBoost trees + image morphology features
+xgboost>=2.0
+scikit-image>=0.22
+scipy>=1.11
+optuna>=3.4            # only used for offline tuning; predict path runs without it
+
+# William — Classical stats (sklearn only, already covered above)
+
+# Reporting / notebooks
+matplotlib>=3.7
+seaborn>=0.12
+reportlab>=4.0
+jupyterlab>=4.0
+ipykernel>=6.0
