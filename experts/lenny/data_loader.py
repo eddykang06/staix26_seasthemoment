@@ -33,8 +33,15 @@ def load_period_date_map() -> pd.DataFrame | None:
 
     Returns None if the file doesn't exist (falls back to temperature proxy).
     """
-    path = Path(__file__).parent.parent / "period_id_map.json"
-    if not path.exists():
+    # Search cwd, all ancestors, and the file's ancestors (the JSON lives at the
+    # repo root, several levels above this module after the move to experts/lenny/).
+    path = None
+    for base in [Path.cwd(), *Path.cwd().parents, *Path(__file__).resolve().parents]:
+        cand = base / "period_id_map.json"
+        if cand.exists():
+            path = cand
+            break
+    if path is None:
         return None
     with open(path) as f:
         date_to_id = json.load(f)

@@ -36,13 +36,16 @@ if IS_KAGGLE:
     GDRIVE = Path("/kaggle/working/cache")   # fresh every run; caching is a no-op
     print(f"✓ Kaggle environment — data root: {DATA}")
 else:
+    # Catch any failure (ImportError off Colab, or AttributeError when run head-
+    # less in a subprocess with no IPython kernel — as the MoE orchestrator does)
+    # and fall back to a plain local cache. Predictions don't need Drive.
     try:
         from google.colab import drive
         drive.mount("/content/drive")
         GDRIVE   = Path("/content/drive/MyDrive/stai_x_william")
         IS_COLAB = True
         print("✓ Colab + Drive mounted")
-    except ImportError:
+    except Exception:
         GDRIVE = Path("cache")
         print(f"ℹ  Local mode — cache at: {GDRIVE.resolve()}")
     # Data root: Drive layout on Colab; fall back to ./data or repo-root ./ locally.
