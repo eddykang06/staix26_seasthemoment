@@ -155,51 +155,66 @@ def build_target_lag_features(df, target_df):
         how="left"
     )
 
+    # NB: must be chronological within each series so the shift(1) anti-leakage
+    # below uses the immediately preceding period (not arbitrary row order).
+    df_with_target = df_with_target.sort_values(
+        ["jurisdiction", "overdose_category", "period_id"]
+    ).reset_index(drop=True)
+
     grouped = df_with_target.groupby(['jurisdiction', 'overdose_category'])['rate_per_10000_ed_visits']
 
-    # Simple lags
+    # ── Anti-leakage ─────────────────────────────────────────────────────────
+    # Every target-derived feature below is shifted by 1 within its series so the
+    # value at period t uses ONLY periods <= t-1. Without the shift, rolling/EWMA
+    # windows (min_periods=1) and diff() include the current target — combined
+    # with target_lag_1 the model could reconstruct y[t] exactly, which inflated
+    # OOF MAE far below the true level. The simple lags are already shift(k>=1).
+
+    # Simple lags (already leak-free)
     for lag in range(1, 7):
         df_with_target[f"target_lag_{lag}"] = grouped.shift(lag)
 
-    # EWMA
+    # EWMA — shifted so it reflects history through t-1 only
     for alpha in [0.3, 0.5, 0.7]:
         df_with_target[f'target_ewma_{alpha}'] = grouped.transform(
-            lambda x: x.ewm(alpha=alpha, adjust=False).mean()
+            lambda x: x.ewm(alpha=alpha, adjust=False).mean().shift(1)
         )
 
-    # Rolling statistics
+    # Rolling statistics — shifted to exclude the current period
     for window in [3, 6]:
         df_with_target[f'target_rolling_mean_{window}'] = grouped.transform(
-            lambda x: x.rolling(window, min_periods=1).mean()
+            lambda x: x.rolling(window, min_periods=1).mean().shift(1)
         )
         df_with_target[f'target_rolling_std_{window}'] = grouped.transform(
-            lambda x: x.rolling(window, min_periods=1).std()
+            lambda x: x.rolling(window, min_periods=1).std().shift(1)
         ).fillna(0.0)
         df_with_target[f'target_rolling_max_{window}'] = grouped.transform(
-            lambda x: x.rolling(window, min_periods=1).max()
+            lambda x: x.rolling(window, min_periods=1).max().shift(1)
         )
         df_with_target[f'target_rolling_min_{window}'] = grouped.transform(
-            lambda x: x.rolling(window, min_periods=1).min()
+            lambda x: x.rolling(window, min_periods=1).min().shift(1)
         )
 
-    # Trend features
-    df_with_target['target_trend'] = grouped.diff()
+    # Trend features — built from past values only (x[t-1]-x[t-2], etc.)
+    df_with_target['target_trend'] = grouped.transform(lambda x: x.diff().shift(1))
     df_with_target['target_acceleration'] = df_with_target.groupby(
         ['jurisdiction', 'overdose_category']
     )['target_trend'].diff()
     df_with_target['is_increasing'] = (df_with_target['target_trend'] > 0).astype(float)
 
-    # Volatility features
+    # Volatility features — shifted rolling std; cv from already-shifted mean
     df_with_target['target_volatility_3'] = grouped.transform(
-        lambda x: x.rolling(3, min_periods=1).std()
+        lambda x: x.rolling(3, min_periods=1).std().shift(1)
     )
     df_with_target['target_cv_3'] = df_with_target['target_volatility_3'] / (
         df_with_target['target_rolling_mean_3'] + 1e-6
     )
 
-    # Ratio to historical mean
+    # Ratio of the last observed value to the expanding mean of prior periods.
+    # (Old version used x / x.mean() — numerator was the current target and the
+    #  denominator pooled future periods: double leakage.)
     df_with_target['target_ratio_to_mean'] = grouped.transform(
-        lambda x: x / (x.mean() + 1e-6)
+        lambda x: x.shift(1) / (x.expanding().mean().shift(1) + 1e-6)
     )
 
     return df_with_target
