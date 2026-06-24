@@ -60,11 +60,10 @@ expert_eddy.csv     schema-aligned expert predictions for the MoE combiner
 - **Text:** compact regex count features from `state_doh_release` for drug, opioid, stimulant, and statistical mentions.
 - **Image:** MAT-density PNGs summarized into intensity statistics and hotspot counts after border/background cleanup.
 - **Temporal:** jurisdiction-level 3- and 12-period rolling mean/std features, always shifted with `shift(1)`.
-- **Schema safety:** predictions are merged back to `sample_submission.csv` before writing the expert CSV.
 
 ---
 
-## Files I wrote
+## My files
 
 ```text
 experts/eddy/
