@@ -4,7 +4,7 @@ Predict `rate_per_10000_ed_visits`, the suspected nonfatal overdose ED-visit rat
 
 **Metric:** block-averaged MAE, averaged across `all_drugs`, `all_opioids`, and `all_stimulants`.
 
-This fork contains the **full team Mixture-of-Experts (MoE) submission pipeline**. My personal contribution is the **XGBoost tree expert** in `experts/eddy/src`, which produces `expert_eddy.csv` for the final ensemble.
+This fork contains the full team Mixture-of-Experts (MoE) submission pipeline. My personal contribution is the **XGBoost tree expert** in `experts/eddy/src`, which produces `expert_eddy.csv` for the final ensemble.
 
 ---
 
