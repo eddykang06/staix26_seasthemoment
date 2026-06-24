@@ -83,8 +83,7 @@ experts/eddy/
 Run the full MoE pipeline from the repo root:
 
 ```bash
-jupyter lab
-# Run SEAStheMoment_STAIX26_submission.ipynb top-to-bottom
+jupyter lab SEAStheMoment_STAIX26_submission.ipynb
 ```
 
 Run only my XGBoost expert:
