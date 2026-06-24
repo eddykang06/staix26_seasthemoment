@@ -107,5 +107,4 @@ Key implementation choices:
 - Combined tabular covariates, public-health text signals, MAT-density image summaries, and past-only temporal features into one lightweight feature set.
 - Trained category-specific regressors for all-drugs, opioids, and stimulants so each target could learn its own nonlinear patterns.
 - Used grouped cross-validation by period to reduce temporal leakage in a time-dependent panel setting.
-- Kept Optuna tuning separate from the final prediction path, making inference deterministic and fast.
 - Generated predictions against the provided submission template so the expert output remains compatible with the root MoE combiner.
