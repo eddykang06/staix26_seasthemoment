@@ -66,7 +66,6 @@ Feature engineering:
 Training and tuning:
 - 3 category-specific regression models, tuned separately for category-dependent prediction.
 - Grouped cross-validation by time period to reduce temporal leakage, facilitating generalization to future forecasting.
-- 
 --- 
 
 ## My files
