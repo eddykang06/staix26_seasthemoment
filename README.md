@@ -48,7 +48,7 @@ predict.py          train 3 tuned XGBRegressor models
 expert_eddy.csv     schema-aligned expert predictions for the MoE combiner
 ```
 
-**Model design:** one XGBoost regression model per target category.  
+**Model design:** One XGBoost regression model per target category.  
 **Objective:** Mean out-of-fold MAE, averaged across 3 target categories.
 **Validation:** 4-fold cross-validation grouped by time-period to minimize temporal leakage.  
 **Tuning:** Optuna search utilities with final parameters frozen in `config.py`.  
