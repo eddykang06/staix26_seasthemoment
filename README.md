@@ -19,14 +19,14 @@ SEAStheMoment_STAIX26_submission.ipynb
   └─ writes final submission.csv
 ```
 
-| Expert | Approach | Output |
+| Expert | Approach | 
 |---|---|---|
-| Jasmine | Healthcare-informed LightGBM | `expert_jasmine.csv` |
-| Lenny | Multimodal transformer | `expert_lenny.csv` / `expert_transformer.csv` |
-| William | Classical statistics + temporal models | `expert_william.csv` |
-| **Eddy** | **Tuned XGBoost with tabular/text/image/time features** | **`expert_eddy.csv`** |
+| Jasmine | Healthcare-informed LightGBM |
+| Lenny | Multimodal transformer |
+| William | Classical statistics + temporal models |
+| **Eddy** | **Tuned XGBoost with tabular/text/image/time features** |
 
-## My XGBoost expert
+## XGBoost expert
 
 ```text
 train/val covariates + overdose labels + MAT-density PNGs
