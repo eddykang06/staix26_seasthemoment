@@ -20,7 +20,7 @@ SEAStheMoment_STAIX26_submission.ipynb
 ```
 
 | Expert | Approach | 
-|---|---|---|
+|---|---|
 | Jasmine | Healthcare-informed LightGBM |
 | Lenny | Multimodal transformer |
 | William | Classical statistics + temporal models |
