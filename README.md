@@ -8,8 +8,6 @@ This repository contains a Mixture-of-Experts (MoE) forecasting pipeline submitt
 
 This fork contains the full team MoE submission pipeline. My personal contribution is the **XGBoost tree expert** in `experts/eddy/src`, which produces `expert_eddy.csv` for the final ensemble.
 
----
-
 ## Full-repo pipeline context
 
 ```text
@@ -27,8 +25,6 @@ SEAStheMoment_STAIX26_submission.ipynb
 | Lenny | Multimodal transformer | `expert_lenny.csv` / `expert_transformer.csv` |
 | William | Classical statistics + temporal models | `expert_william.csv` |
 | **Eddy** | **Tuned XGBoost with tabular/text/image/time features** | **`expert_eddy.csv`** |
-
----
 
 ## My XGBoost expert
 
@@ -54,8 +50,6 @@ expert_eddy.csv     schema-aligned expert predictions for the MoE combiner
 **Tuning:** Optuna search utilities with final parameters frozen in `config.py`.  
 **Integration:** `run_expert.py` provides a subprocess-safe entrypoint for the root MoE notebook.
 
----
-
 ## Engineering highlights
 Feature engineering:
 - **Tabular:** region, period date ordering, weather interaction, and Google Trends aggregates.
@@ -66,7 +60,6 @@ Feature engineering:
 Training and tuning:
 - 3 category-specific regression models, tuned separately for category-dependent prediction.
 - Grouped cross-validation by time period to reduce temporal leakage, facilitating generalization to future forecasting.
---- 
 
 ## My files
 
@@ -80,8 +73,6 @@ experts/eddy/
     ├── config.py              # tuned XGBoost hyperparameters
     └── tuning.py              # Optuna CV for XGBoost/LightGBM comparison
 ```
-
----
 
 ## Quick start
 
