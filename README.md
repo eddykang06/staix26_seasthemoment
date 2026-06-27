@@ -52,10 +52,10 @@ expert_eddy.csv     schema-aligned expert predictions for the MoE combiner
 
 ## Engineering highlights
 Feature engineering:
-- **Tabular:** region, period date ordering, weather interaction, and Google Trends aggregates.
-- **Text:** compact regex count features from Department of Health release text for drug, opioid, stimulant, and statistical mentions.
+- **Tabular:** Region, period date ordering, weather interaction, and Google Trends aggregates.
+- **Text:** Compact regex count features from Department of Health release text for drug, opioid, stimulant, and statistical mentions.
 - **Image:** MAT-density PNGs summarized into intensity statistics and hotspot counts after border/background cleanup.
-- **Temporal:** state-level 3- and 12-period rolling mean/std features.
+- **Temporal:** State-level 3- and 12-period rolling mean/std features.
 
 Training and tuning:
 - 3 category-specific regression models, tuned separately for category-dependent prediction.
