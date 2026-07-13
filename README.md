@@ -10,14 +10,6 @@ This fork contains the full team MoE submission pipeline. My personal contributi
 
 ## Full-repo pipeline context
 
-```text
-SEAStheMoment_STAIX26_submission.ipynb
-  ├─ runs four isolated expert pipelines under experts/
-  ├─ loads each expert_*.csv prediction file
-  ├─ combines experts with inverse-MAE weights by drug category
-  ├─ applies nonnegative + nesting constraints
-  └─ writes final submission.csv
-```
 
 | Expert | Approach | 
 |---|---|
@@ -25,6 +17,11 @@ SEAStheMoment_STAIX26_submission.ipynb
 | Lenny | Multimodal transformer |
 | William | Classical statistics + temporal models |
 | **Eddy** | **Tuned XGBoost** |
+
+The final submission notebook `SEAStheMoment_STAIX26_submission.ipynb` perfoms the followings:
+- Runs four isolated expert pipelines under `experts/`
+- Loads predictions from each expert into separate csvs
+- Combines expert prediction with inverse-MAE weighting by drug category
 
 ## XGBoost expert
 
