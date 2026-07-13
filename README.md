@@ -8,8 +8,7 @@ The evaluation metric was block-averaged MAE, averaged across `all_drugs`, `all_
 
 This fork contains the full team MoE submission pipeline. My personal contribution is the XGBoost tree expert in `experts/eddy/src`, which produces `expert_eddy.csv` for the final ensemble prediction.
 
-## Full-repo pipeline context
-
+## Full pipeline context
 
 | Expert | Approach | 
 |---|---|
@@ -23,53 +22,34 @@ The final submission notebook `SEAStheMoment_STAIX26_submission.ipynb` perfoms t
 - Loads predictions from each expert into separate csvs
 - Combines expert prediction with inverse-MAE weighting by drug category
 
-## XGBoost expert
-
-```text
-train/val covariates + overdose labels + MAT-density PNGs
-        |
-        v
-data_loader.py      load CSVs/images, split targets by overdose category
-        │
-        v
-features.py         build tabular, text, image, and shifted rolling features
-        │
-        v
-predict.py          train 3 tuned XGBRegressor models
-        │
-        v
-expert_eddy.csv     schema-aligned expert predictions for the MoE combiner
-```
-
-**Model design:** One XGBoost regression model per target category.  
-**Objective:** Mean out-of-fold MAE, averaged across 3 target categories.
-**Validation:** 4-fold cross-validation grouped by time-period to minimize temporal leakage.  
-**Tuning:** Optuna search utilities with final parameters frozen in `config.py`.  
-**Integration:** `run_expert.py` provides a subprocess-safe entrypoint for the root MoE notebook.
-
-## Engineering highlights
-Feature engineering:
-- **Tabular:** Region, period date ordering, weather interaction, and Google Trends aggregates.
-- **Text:** Compact regex count features from Department of Health release text for drug, opioid, stimulant, and statistical mentions.
-- **Image:** MAT-density PNGs summarized into intensity statistics and hotspot counts after border/background cleanup.
-- **Temporal:** State-level 3- and 12-period rolling mean/std features.
-
-Training and tuning:
-- 3 category-specific regression models, tuned separately for category-dependent prediction.
-- Grouped cross-validation by time period to reduce temporal leakage, facilitating generalization to future forecasting.
-
 ## My files
 
 ```text
 experts/eddy/
-├── run_expert.py              # subprocess-safe expert entrypoint
+├── run_expert.py              # Subprocess-safe expert entrypoint
 └── src/
-    ├── data_loader.py         # train/val/sample loading + PNG sidecars
-    ├── features.py            # multimodal feature pipeline
-    ├── predict.py             # end-to-end train → predict → CSV
-    ├── config.py              # tuned XGBoost hyperparameters
-    └── tuning.py              # Optuna CV for XGBoost/LightGBM comparison
+    ├── data_loader.py         # Train/val/sample loading + PNG sidecars
+    ├── features.py            # Multimodal feature engineering pipeline
+    ├── predict.py             # End-to-end train → predict → CSV
+    ├── config.py              # Tuned XGBoost hyperparameters
+    └── tuning.py              # Time-grouped cross-validation for hyperparameter tuning
 ```
+
+## XGBoost expert description
+Model:
+- One XGBoost regression model for each prediction target category
+- Objective: Mean out-of-fold MAE, averaged across 3 target categories
+
+Feature engineering:
+- Tabular: Region, period date ordering, weather interaction, and Google Trends aggregates
+- Text: Compact regex count features from Department of Health release text for drug, opioid, stimulant, and statistical mentions
+- Image: MAT-density PNGs summarized into intensity statistics and hotspot counts after border/background cleanup
+- Temporal: State-level 3- and 12-period rolling mean/std features
+
+Training and tuning:
+- 3 category-specific regression models, tuned separately for category-dependent prediction
+- 4-fold time-grouped cross-validation to reduce temporal leakage, facilitating generalization to future forecasting
+
 
 ## Quick start
 
