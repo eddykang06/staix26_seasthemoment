@@ -2,11 +2,11 @@
 
 ## Objective
 
-This repository contains a Mixture-of-Experts (MoE) forecasting pipeline submitted to the [2026 STAI-X Challenge](https://statsupai.org/STAIX2026/challenge.html), hosted by the Harvard Departments of Statistics and Biostatistics. The objective was to predict `rate_per_10000_ed_visits`, the suspected nonfatal overdose emergency department (ED) visit rate per 10,000 total ED visits, for held-out validation rows across 6 time periods × 51 jurisdictions × 3 drug categories. The dataset consisted of tabular, text, and image data from a real public health dataset. 
+This repository contains a Mixture-of-Experts forecasting pipeline submitted to the [2026 STAI-X Challenge](https://statsupai.org/STAIX2026/challenge.html), hosted by the Harvard Departments of Statistics and Biostatistics. The objective was to predict `rate_per_10000_ed_visits`, the suspected nonfatal overdose emergency department (ED) visit rate per 10,000 total ED visits, for held-out validation rows across 6 time periods × 51 jurisdictions × 3 drug categories. The dataset consisted of tabular, text, and image data from a real public health dataset. 
 
 The evaluation metric was block-averaged MAE, averaged across `all_drugs`, `all_opioids`, and `all_stimulants`.
 
-This fork contains the full team MoE submission pipeline. My personal contribution is the XGBoost tree expert in `experts/eddy/src`, which produces `expert_eddy.csv` for the final ensemble prediction.
+This fork contains the full team submission pipeline. My personal contribution is the XGBoost tree expert in `experts/eddy/src`, which produces `expert_eddy.csv` for the final ensemble prediction.
 
 ## Full pipeline context
 
