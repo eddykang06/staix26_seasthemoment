@@ -17,7 +17,7 @@ This fork contains the full team submission pipeline. My personal contribution i
 | William | Classical statistics + temporal models |
 | **Eddy** | **Tuned XGBoost** |
 
-The final submission notebook `SEAStheMoment_STAIX26_submission.ipynb` perfoms the followings:
+The final submission notebook `SEAStheMoment_STAIX26_submission.ipynb` performs the following:
 - Runs four isolated expert pipelines under `experts/`
 - Loads predictions from each expert into separate csvs
 - Combines expert prediction with inverse-MAE weighting by drug category
